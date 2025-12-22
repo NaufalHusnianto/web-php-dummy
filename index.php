@@ -9,12 +9,13 @@
 <body>
     <h1 class="text-center mt-4">Selamat Datang</h1>
     <h4 class="text-center">Sistem Informasi dan Manajemen Perpustakaan</h4>
-
+    
     <div class="d-flex flex-column justify-content-evenly mt-4 px-5 gap-2">
         <a href="book.php" class="btn btn-primary p-4">List Buku</a>
         <a href="rack.php" class="btn btn-warning p-4">List Rack</a>
         <a href="user.php" class="btn btn-danger p-4">List User</a>
         <a href="loans.php" class="btn btn-success p-4">List Peminjaman</a>
+        <a class="btn btn-danger" href="logout.php">Logout</a>
     </div>
 
     <p class="text-center mt-5">Copyright &copy Naufal Husnianto 2024. All Rights Reserved</p>
