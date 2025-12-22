@@ -49,9 +49,15 @@ require_once("header.php");
                     <a href="show-user.php?id=<?= $user['id'] ?>" class="btn btn-info btn-sm">Detail</a>
                     <a href="edit-user.php?id=<?= $user['id'] ?>" class="btn btn-warning btn-sm">Edit</a>
                     <?php if ($user['id'] != $_SESSION['user_id']): ?>
-                    <a href="delete-user.php?id=<?= $user['id'] ?>" class="btn btn-danger btn-sm" 
-                       onclick="return confirm('Yakin menghapus pengguna ini?')">Hapus</a>
-                    <?php endif; ?>
+                        <form method="POST" action="delete-user.php" style="display:inline;">
+                        <input type="hidden" name="id" value="<?= $user['id'] ?>">
+                        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
+                        <button type="submit" class="btn btn-danger btn-sm"
+                    onclick="return confirm('Yakin menghapus pengguna ini?')">
+                    Hapus
+                </button>
+            </form>
+            <?php endif; ?>
                 </td>
             </tr>
             <?php $no++; ?>
