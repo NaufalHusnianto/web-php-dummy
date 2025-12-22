@@ -10,7 +10,7 @@ if (!$user_id) {
 
 // Ambil data user login dari session
 $sessionUserId = $_SESSION['user_id'];
-$role = $_SESSION['role'];
+$role = $_SESSION['user_role'] ?? null;
 
 // 🔐 PENCEGAHAN IDOR
 // Jika BUKAN admin, hanya boleh lihat data sendiri
@@ -60,9 +60,9 @@ try {
             Informasi Pengguna
         </div>
         <div class="card-body">
-            <p><strong>Nama:</strong> <?= $user['name'] ?></p>
-            <p><strong>Email:</strong> <?= $user['email'] ?></p>
-            <p><strong>Role:</strong> <?= $user['role'] ?></p>
+            <p><strong>Nama:</strong> <?= htmlspecialchars($user['name']) ?></p>
+            <p><strong>Email:</strong> <?= htmlspecialchars($user['email']) ?></p>
+            <p><strong>Role:</strong> <?= htmlspecialchars($user['role']) ?></p>
         </div>
     </div>
 
@@ -83,11 +83,8 @@ try {
                 ? htmlspecialchars($loan['return_date'])
                 : 'Belum dikembalikan' ?></td>
         </tr>
-        <?php endforeach; ?>
+    <?php endforeach; ?>
 
-            $no++;
-            }
-        ?>
     </table>
 
     <a href="user.php" class="btn btn-primary">Kembali ke List Pengguna</a>
