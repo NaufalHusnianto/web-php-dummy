@@ -1,8 +1,13 @@
 <?php
-require_once("config.php");
+require_once("config.php"); // pastikan config.php menghasilkan $pdo
 
-$user_sql = "SELECT * FROM users";
-$result = mysqli_query($koneksi, $user_sql);
+try {
+    // Query menggunakan PDO
+    $stmt = $pdo->query("SELECT * FROM users");
+    $users = $stmt->fetchAll();
+} catch (PDOException $e) {
+    die("Terjadi kesalahan: " . $e->getMessage());
+}
 ?>
 
 <!DOCTYPE html>
@@ -34,13 +39,13 @@ $result = mysqli_query($koneksi, $user_sql);
         </tr>
         <?php
         $no = 1;
-        while ($user = mysqli_fetch_array($result)) {
+        foreach ($users as $user) {
         ?>
             <tr>
                 <td><?= htmlspecialchars($no, ENT_QUOTES, 'UTF-8') ?></td>
                 <td><?= htmlspecialchars($user['name'], ENT_QUOTES, 'UTF-8') ?></td>
                 <td><?= htmlspecialchars($user['email'], ENT_QUOTES, 'UTF-8') ?></td>
-                <td><?= htmlspecialchars($user['password'], ENT_QUOTES, 'UTF-8') ?></td>
+                <td>••••••••</td> <!-- jangan tampilkan hash password -->
                 <td><?= htmlspecialchars($user['role'], ENT_QUOTES, 'UTF-8') ?></td>
                 <td>
                     <a href="show-user.php?id=<?= urlencode($user['id']) ?>" class="btn btn-info">Detail</a>
@@ -48,7 +53,6 @@ $result = mysqli_query($koneksi, $user_sql);
                     <a href="delete-user.php?id=<?= urlencode($user['id']) ?>" class="btn btn-danger" onclick="return confirm('Yakin menghapus data?')">Delete</a>
                 </td>
             </tr>
-
         <?php
             $no++;
         }
