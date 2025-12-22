@@ -8,12 +8,10 @@ if (!$user_id) {
     die("ID tidak valid");
 }
 
-// Ambil data user login dari session
 $sessionUserId = $_SESSION['user_id'];
 $role = $_SESSION['user_role'] ?? null;
 
-// 🔐 PENCEGAHAN IDOR
-// Jika BUKAN admin, hanya boleh lihat data sendiri
+// 🔐 IDOR
 if ($role !== 'admin' && $user_id !== $sessionUserId) {
     die("Akses ditolak (IDOR)");
 }
