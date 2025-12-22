@@ -1,18 +1,31 @@
 <?php
-    require_once("config.php");
+require_once("config.php");
 
-    $user_id = $_GET['id'];
+// Validasi dan cast input user
+$user_id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
 
-    $user_sql = "SELECT * FROM users WHERE id = $user_id";
-    $user_result = mysqli_query($koneksi, $user_sql);
-    $user = mysqli_fetch_array($user_result);
+try {
+    // Query user
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE id = :id");
+    $stmt->bindParam(':id', $user_id, PDO::PARAM_INT);
+    $stmt->execute();
+    $user = $stmt->fetch();
 
-    $loan_sql = "SELECT loans.loan_date, loans.return_date, books.title as book_title 
-                 FROM loans 
-                 LEFT JOIN books ON loans.book_id = books.id
-                 WHERE loans.user_id = $user_id";
-    $loan_result = mysqli_query($koneksi, $loan_sql);
+    // Query daftar peminjaman
+    $loan_stmt = $pdo->prepare("
+        SELECT loans.loan_date, loans.return_date, books.title as book_title 
+        FROM loans 
+        LEFT JOIN books ON loans.book_id = books.id
+        WHERE loans.user_id = :id
+    ");
+    $loan_stmt->bindParam(':id', $user_id, PDO::PARAM_INT);
+    $loan_stmt->execute();
+    $loans = $loan_stmt->fetchAll();
+} catch (PDOException $e) {
+    die("Terjadi kesalahan: " . $e->getMessage());
+}
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
