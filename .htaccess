@@ -1,0 +1,15 @@
+# Redirect semua akses ke halaman login jika belum login
+RewriteEngine On
+
+# Jangan redirect file-file ini
+RewriteCond %{REQUEST_URI} !^/login\.php$
+RewriteCond %{REQUEST_URI} !^/index\.php$
+RewriteCond %{REQUEST_URI} !^/css/
+RewriteCond %{REQUEST_URI} !^/js/
+RewriteCond %{REQUEST_URI} !^/images/
+RewriteCond %{REQUEST_URI} !^/config\.php$
+
+# Jika belum login dan bukan halaman login, redirect ke login
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ login.php [L]
