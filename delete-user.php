@@ -34,6 +34,19 @@ if ($loan_count > 0) {
     exit;
 }
 
+$role = $_SESSION['role'];
+$sessionUserId = $_SESSION['user_id'];
+
+if ($role !== 'admin') {
+    die("Akses ditolak (IDOR)");
+}
+
+// tambahan: admin tidak boleh hapus dirinya sendiri
+if ($id === $sessionUserId) {
+    die("Tidak boleh menghapus akun sendiri");
+}
+
+
 // 5️⃣ DELETE USER (AMAN)
 $stmt = $pdo->prepare("DELETE FROM users WHERE id = :id");
 $stmt->execute(['id' => $id]);
