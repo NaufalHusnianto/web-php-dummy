@@ -1,6 +1,6 @@
 <?php
-require_once("auth.php");
 require_once("config.php");
+require_once("auth.php");
 
 // Ambil ID dari URL
 $user_id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
