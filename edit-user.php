@@ -6,6 +6,11 @@
     $user_sql = "SELECT * FROM users WHERE id = $user_id";
     $user_result = mysqli_query($koneksi, $user_sql);
     $user = mysqli_fetch_array($user_result);
+
+    if ($role !== 'admin' && $id !== $_SESSION['user_id']) {
+    die("Akses ditolak (IDOR)");
+}
+
 ?>
 
 <!DOCTYPE html>

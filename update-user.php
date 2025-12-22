@@ -8,6 +8,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'];
     $role = $_POST['role'];
 
+    if ($role !== 'admin' && $id !== $_SESSION['user_id']) {
+    die("Akses ditolak (IDOR)");
+    }
+
     if (empty($name) || empty($email) || empty($role)) {
         echo "Semua kolom harus diisi.";
         exit;
