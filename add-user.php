@@ -44,6 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="card">
         <div class="card-body">
             <form method="POST" action="">
+                <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
                 <div class="mb-3">
                     <label for="name" class="form-label">Nama</label>
                     <input type="text" class="form-control" id="name" name="name" required>

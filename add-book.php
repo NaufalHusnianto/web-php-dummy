@@ -17,6 +17,7 @@
     <h1 class="text-center">Tambah Buku</h1>
 
     <form action="add-book.php" method="post">
+        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
         <div class="mb-3">
             <label for="bookTitle" class="form-label">Title</label>
             <input type="text" class="form-control" id="bookTitle" name="bookTitle">

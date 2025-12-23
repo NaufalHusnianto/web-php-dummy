@@ -1,28 +1,43 @@
 <?php
 require_once("config.php");
+require_once("auth.php");
 
-// Validasi dan cast input user
-$user_id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
+// Ambil ID dari URL
+$user_id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+if (!$user_id) {
+    die("ID tidak valid");
+}
+
+$sessionUserId = $_SESSION['user_id'];
+$role = $_SESSION['user_role'] ?? null;
+
+// 🔐 IDOR
+if ($role !== 'admin' && $user_id !== $sessionUserId) {
+    die("Akses ditolak (IDOR)");
+}
 
 try {
     // Query user
     $stmt = $pdo->prepare("SELECT * FROM users WHERE id = :id");
-    $stmt->bindParam(':id', $user_id, PDO::PARAM_INT);
-    $stmt->execute();
+    $stmt->execute(['id' => $user_id]);
     $user = $stmt->fetch();
+
+    if (!$user) {
+        die("User tidak ditemukan");
+    }
 
     // Query daftar peminjaman
     $loan_stmt = $pdo->prepare("
-        SELECT loans.loan_date, loans.return_date, books.title as book_title 
-        FROM loans 
+        SELECT loans.loan_date, loans.return_date, books.title AS book_title
+        FROM loans
         LEFT JOIN books ON loans.book_id = books.id
         WHERE loans.user_id = :id
     ");
-    $loan_stmt->bindParam(':id', $user_id, PDO::PARAM_INT);
-    $loan_stmt->execute();
+    $loan_stmt->execute(['id' => $user_id]);
     $loans = $loan_stmt->fetchAll();
+
 } catch (PDOException $e) {
-    die("Terjadi kesalahan: " . $e->getMessage());
+    die("Terjadi kesalahan");
 }
 ?>
 
@@ -43,9 +58,9 @@ try {
             Informasi Pengguna
         </div>
         <div class="card-body">
-            <p><strong>Nama:</strong> <?= $user['name'] ?></p>
-            <p><strong>Email:</strong> <?= $user['email'] ?></p>
-            <p><strong>Role:</strong> <?= $user['role'] ?></p>
+            <p><strong>Nama:</strong> <?= htmlspecialchars($user['name']) ?></p>
+            <p><strong>Email:</strong> <?= htmlspecialchars($user['email']) ?></p>
+            <p><strong>Role:</strong> <?= htmlspecialchars($user['role']) ?></p>
         </div>
     </div>
 
@@ -57,20 +72,17 @@ try {
             <th>Tanggal Peminjaman</th>
             <th>Tanggal Pengembalian</th>
         </tr>
-        <?php
-            $no = 1;
-            while ($loan = mysqli_fetch_array($loan_result)) {
-        ?>
+    <?php $no = 1; foreach ($loans as $loan): ?>
         <tr>
-            <td><?= $no ?></td>
-            <td><?= $loan['book_title'] ?></td>
-            <td><?= $loan['loan_date'] ?></td>
-            <td><?= $loan['return_date'] ? $loan['return_date'] : 'Belum dikembalikan' ?></td>
+            <td><?= $no++ ?></td>
+            <td><?= htmlspecialchars($loan['book_title']) ?></td>
+            <td><?= htmlspecialchars($loan['loan_date']) ?></td>
+            <td><?= $loan['return_date']
+                ? htmlspecialchars($loan['return_date'])
+                : 'Belum dikembalikan' ?></td>
         </tr>
-        <?php
-            $no++;
-            }
-        ?>
+    <?php endforeach; ?>
+
     </table>
 
     <a href="user.php" class="btn btn-primary">Kembali ke List Pengguna</a>

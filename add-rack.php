@@ -10,6 +10,7 @@
     <h1 class="text-center">Tambah Rak Buku</h1>
 
     <form action="add-rack.php" method="post">
+        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
         <div class="mb-3">
             <label for="rackName" class="form-label">Rak Buku</label>
             <input type="text" class="form-control" id="rackName" name="rackName">
