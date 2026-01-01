@@ -128,7 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     ");
                     $stmt->execute([$ip, $email]);
                 }
-                // unset($_SESSION['csrf_token']);
+                unset($_SESSION['csrf_token']);
             }
         } catch (PDOException $e) {
             $error = "Terjadi kesalahan sistem";
