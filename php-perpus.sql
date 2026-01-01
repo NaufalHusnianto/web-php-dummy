@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Waktu pembuatan: 08 Okt 2024 pada 13.32
--- Versi server: 8.0.30
--- Versi PHP: 8.3.6
+-- Generation Time: Jan 01, 2026 at 03:16 PM
+-- Server version: 8.4.3
+-- PHP Version: 8.3.16
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,7 +24,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `books`
+-- Table structure for table `books`
 --
 
 CREATE TABLE `books` (
@@ -37,10 +37,10 @@ CREATE TABLE `books` (
   `rack_id` int DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data untuk tabel `books`
+-- Dumping data for table `books`
 --
 
 INSERT INTO `books` (`id`, `title`, `author`, `isbn`, `year_published`, `genre`, `rack_id`, `created_at`, `updated_at`) VALUES
@@ -50,7 +50,7 @@ INSERT INTO `books` (`id`, `title`, `author`, `isbn`, `year_published`, `genre`,
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `loans`
+-- Table structure for table `loans`
 --
 
 CREATE TABLE `loans` (
@@ -62,10 +62,10 @@ CREATE TABLE `loans` (
   `status` enum('borrowed','returned') DEFAULT 'borrowed',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data untuk tabel `loans`
+-- Dumping data for table `loans`
 --
 
 INSERT INTO `loans` (`id`, `user_id`, `book_id`, `loan_date`, `return_date`, `status`, `created_at`, `updated_at`) VALUES
@@ -75,7 +75,28 @@ INSERT INTO `loans` (`id`, `user_id`, `book_id`, `loan_date`, `return_date`, `st
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `racks`
+-- Table structure for table `login_attempts`
+--
+
+CREATE TABLE `login_attempts` (
+  `id` int NOT NULL,
+  `ip_address` varchar(45) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `attempts` int DEFAULT '1',
+  `last_attempt` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `login_attempts`
+--
+
+INSERT INTO `login_attempts` (`id`, `ip_address`, `email`, `attempts`, `last_attempt`) VALUES
+(4, '192.168.1.2', 'admin@email.com', 5, '2026-01-01 15:02:30');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `racks`
 --
 
 CREATE TABLE `racks` (
@@ -83,10 +104,10 @@ CREATE TABLE `racks` (
   `rack_name` varchar(100) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data untuk tabel `racks`
+-- Dumping data for table `racks`
 --
 
 INSERT INTO `racks` (`id`, `rack_name`, `created_at`, `updated_at`) VALUES
@@ -96,7 +117,7 @@ INSERT INTO `racks` (`id`, `rack_name`, `created_at`, `updated_at`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `users`
+-- Table structure for table `users`
 --
 
 CREATE TABLE `users` (
@@ -107,23 +128,27 @@ CREATE TABLE `users` (
   `role` enum('admin','user') DEFAULT 'user',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data untuk tabel `users`
+-- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `role`, `created_at`, `updated_at`) VALUES
 (1, 'Naufal Husnianto', 'husniantonaufal@email.com', '$2y$10$Hkr9zoQRBwPWWY2///oJ2e2tS/gfJzupxNzttM2haYb4gte2Cx2yy', 'user', '2024-10-02 22:54:15', '2024-10-08 13:04:03'),
 (2, 'Excel Arion', 'pandik@gmail.com', '$2y$10$CINuc7Vw9VzuLfP66mNkLepEnVFXflA305PVmY.JcF3VyaJgSd.Vq', 'user', '2024-10-04 00:16:54', '2024-10-04 00:16:54'),
-(4, 'wadaw', 'aldi@email.com', '$2y$10$8xbh.Q/RcqXuOE7O/6h93OLvVuXx0dKJSzRyP96QnnKRJiJEbsL7.', 'user', '2024-10-04 02:34:45', '2024-10-04 02:34:45');
+(4, 'wadaw', 'aldi@email.com', '$2y$10$8xbh.Q/RcqXuOE7O/6h93OLvVuXx0dKJSzRyP96QnnKRJiJEbsL7.', 'user', '2024-10-04 02:34:45', '2024-10-04 02:34:45'),
+(5, 'c', 'karina@email.com', '$2y$10$2QVPt2S05SiZ3Q09LYr5IufP04isMZQaqsAzV5TO1nOFR6x/L8sL6', 'user', '2025-12-22 05:06:52', '2025-12-22 05:06:52'),
+(6, '<script>alert(\"XSS berhasil\")</script>', 'abc@email.com', '$2y$10$C0xS6XPSWmbozhc7Hz3SM.HZyVNRo2R4SuqR8luDiY3r.md/z81j.', 'user', '2025-12-22 05:09:22', '2025-12-22 05:09:22'),
+(7, '<script>alert(\"XSS berhasil\")</script>', 'ali@email.com', '$2y$10$ErOdv0ffqI0WcXm30MOK8u0e75TeYxz.x4vEggxYnKGIRPwJ86khC', 'user', '2025-12-22 05:17:04', '2025-12-22 05:17:04'),
+(8, 'admin', 'admin@email.com', '$2y$10$CINuc7Vw9VzuLfP66mNkLepEnVFXflA305PVmY.JcF3VyaJgSd.Vq', 'admin', '2026-01-01 13:27:13', '2026-01-01 13:30:07');
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indeks untuk tabel `books`
+-- Indexes for table `books`
 --
 ALTER TABLE `books`
   ADD PRIMARY KEY (`id`),
@@ -131,7 +156,7 @@ ALTER TABLE `books`
   ADD KEY `rack_id` (`rack_id`);
 
 --
--- Indeks untuk tabel `loans`
+-- Indexes for table `loans`
 --
 ALTER TABLE `loans`
   ADD PRIMARY KEY (`id`),
@@ -139,58 +164,74 @@ ALTER TABLE `loans`
   ADD KEY `book_id` (`book_id`);
 
 --
--- Indeks untuk tabel `racks`
+-- Indexes for table `login_attempts`
+--
+ALTER TABLE `login_attempts`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_ip_email` (`ip_address`,`email`),
+  ADD KEY `idx_email` (`email`),
+  ADD KEY `idx_ip` (`ip_address`),
+  ADD KEY `idx_last_attempt` (`last_attempt`);
+
+--
+-- Indexes for table `racks`
 --
 ALTER TABLE `racks`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `users`
+-- Indexes for table `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `email` (`email`);
 
 --
--- AUTO_INCREMENT untuk tabel yang dibuang
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT untuk tabel `books`
+-- AUTO_INCREMENT for table `books`
 --
 ALTER TABLE `books`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT untuk tabel `loans`
+-- AUTO_INCREMENT for table `loans`
 --
 ALTER TABLE `loans`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT untuk tabel `racks`
+-- AUTO_INCREMENT for table `login_attempts`
+--
+ALTER TABLE `login_attempts`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `racks`
 --
 ALTER TABLE `racks`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT untuk tabel `users`
+-- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
--- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
+-- Constraints for dumped tables
 --
 
 --
--- Ketidakleluasaan untuk tabel `books`
+-- Constraints for table `books`
 --
 ALTER TABLE `books`
   ADD CONSTRAINT `books_ibfk_1` FOREIGN KEY (`rack_id`) REFERENCES `racks` (`id`);
 
 --
--- Ketidakleluasaan untuk tabel `loans`
+-- Constraints for table `loans`
 --
 ALTER TABLE `loans`
   ADD CONSTRAINT `loans_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),

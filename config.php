@@ -1,6 +1,9 @@
 <?php
-
 session_start();
+
+date_default_timezone_set('Asia/Jakarta');
+
+ini_set('date.timezone', 'Asia/Jakarta');
 
 if (empty($_SESSION['csrf_token'])) {
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
