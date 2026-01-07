@@ -1,3 +1,6 @@
+# Matikan Directory Listing (Mitigasi Path Traversal)
+Options -Indexes
+
 # Redirect semua akses ke halaman login jika belum login
 RewriteEngine On
 
